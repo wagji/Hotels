@@ -1,6 +1,6 @@
 package customer;
 
-import java.sql.*; 
+import java.sql.*;  
 
 import lombok.Data;
 

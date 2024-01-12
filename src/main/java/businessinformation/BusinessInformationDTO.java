@@ -1,4 +1,4 @@
-package reservationhistory;
+package businessinformation;
 
 import jakarta.servlet.ServletException;  
 import jakarta.servlet.annotation.WebServlet;
@@ -12,15 +12,14 @@ import java.io.IOException;
 import java.util.Date;
 
 @Data
-public class ReservationhistoryDTO 
+public class BusinessInformationDTO 
 {
 	
-    private String ReservationNumber ;
-    private String SerialNumber;
-    private String CustomerNumber;
-    private Date ReservationStartDate;
-    private Date ReservationEndDate;
-    private int NumberOfPeople;
-    private String PaymentMethod;
+    private String SeriaNumber;
+    private String BusinessAddress;
+    private String RoomType;
+    private int RoomCount;
+    private int Fee;
+    
     
 }

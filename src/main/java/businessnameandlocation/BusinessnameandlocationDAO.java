@@ -1,40 +1,54 @@
 package businessnameandlocation;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Servlet implementation class BusinessnameandlocationDAO
- */
-public class BusinessnameandlocationDAO extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public BusinessnameandlocationDAO() {
-        super();
-        // TODO Auto-generated constructor stub
+public class BusinessNameAndLocationDAO {
+
+    private Connection connection;
+
+    // Constructor to initialize the connection
+    public BusinessNameAndLocationDAO(Connection connection) {
+        this.connection = connection;
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
+    // Method to save business name and location
+    public void saveBusinessNameAndLocation(BusinessNameAndLocationDTO businessNameAndLocation) throws SQLException {
+        String query = "INSERT INTO business_name_and_location_table (business_owner_number, business_name, business_address) " +
+                       "VALUES (?, ?, ?)";
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, businessNameAndLocation.getBusinessOwnerNumber());
+            preparedStatement.setString(2, businessNameAndLocation.getBusinessName());
+            preparedStatement.setString(3, businessNameAndLocation.getBusinessAddress());
 
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    // Method to retrieve all business names and locations
+    public List<BusinessNameAndLocationDTO> getAllBusinessNamesAndLocations() throws SQLException {
+        List<BusinessNameAndLocationDTO> businessNamesAndLocations = new ArrayList<>();
+        String query = "SELECT * FROM business_name_and_location_table";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                BusinessNameAndLocationDTO businessNameAndLocation = new BusinessNameAndLocationDTO();
+                businessNameAndLocation.setBusinessOwnerNumber(resultSet.getString("business_owner_number"));
+                businessNameAndLocation.setBusinessName(resultSet.getString("business_name"));
+                businessNameAndLocation.setBusinessAddress(resultSet.getString("business_address"));
+
+                businessNamesAndLocations.add(businessNameAndLocation);
+            }
+        }
+
+        return businessNamesAndLocations;
+    }
+
+    // Additional methods for updating, deleting, or querying business names and locations can be added here
 }

@@ -1,40 +1,63 @@
 package customer;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
-/**
- * Servlet implementation class CustomerDAO
- */
-public class CustomerDAO extends HttpServlet {
-	private static final long serialVersionUID = 1L;
-       
-    /**
-     * @see HttpServlet#HttpServlet()
-     */
-    public CustomerDAO() {
-        super();
-        // TODO Auto-generated constructor stub
+public class CustomerDAO {
+
+    private Connection connection;
+
+    // Constructor to initialize the connection
+    public CustomerDAO(Connection connection) {
+        this.connection = connection;
     }
 
-	/**
-	 * @see HttpServlet#doGet(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		response.getWriter().append("Served at: ").append(request.getContextPath());
-	}
+    // Method to save customer
+    public void saveCustomer(CustomerDTO customer) throws SQLException {
+        String query = "INSERT INTO customer_table (customer_number, customer_name, phone_number, " +
+                       "resident_registration_number, email, password, address) " +
+                       "VALUES (?, ?, ?, ?, ?, ?, ?)";
 
-	/**
-	 * @see HttpServlet#doPost(HttpServletRequest request, HttpServletResponse response)
-	 */
-	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-		// TODO Auto-generated method stub
-		doGet(request, response);
-	}
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, customer.getCustomerNumber());
+            preparedStatement.setString(2, customer.getCustmerName());
+            preparedStatement.setString(3, customer.getPhoneNumber());
+            preparedStatement.setString(4, customer.getResidentRegistrationNumber());
+            preparedStatement.setString(5, customer.getEmail());
+            preparedStatement.setString(6, customer.getPassword());
+            preparedStatement.setString(7, customer.getAddress());
 
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    // Method to retrieve all customers
+    public List<CustomerDTO> getAllCustomers() throws SQLException {
+        List<CustomerDTO> customers = new ArrayList<>();
+        String query = "SELECT * FROM customer_table";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query);
+             ResultSet resultSet = preparedStatement.executeQuery()) {
+            while (resultSet.next()) {
+                CustomerDTO customer = new CustomerDTO();
+                customer.setCustomerNumber(resultSet.getString("customer_number"));
+                customer.setCustmerName(resultSet.getString("customer_name"));
+                customer.setPhoneNumber(resultSet.getString("phone_number"));
+                customer.setResidentRegistrationNumber(resultSet.getString("resident_registration_number"));
+                customer.setEmail(resultSet.getString("email"));
+                customer.setPassword(resultSet.getString("password"));
+                customer.setAddress(resultSet.getString("address"));
+
+                customers.add(customer);
+            }
+        }
+
+        return customers;
+    }
+
+    // Additional methods for updating, deleting, or querying customers can be added here
 }

@@ -1,14 +1,8 @@
 package company;
 
-import jakarta.servlet.ServletException; 
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import lombok.Data;
 
-import java.util.Date;
-
+@Data
 public class CompanyDTO 
 {
 	
@@ -52,4 +46,3 @@ public class CompanyDTO
     
     // You can generate these using your IDE or write them manually
 }
-

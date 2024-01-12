@@ -4,65 +4,54 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.List;
 
-import lombok.Data;
-@Data
-public class CompanyDAO 
-{
+public class CompanyDAO {
+
     private Connection connection;
 
-    public CompanyDAO(Connection connection) 
-    {
+    // Constructor to initialize the connection
+    public CompanyDAO(Connection connection) {
         this.connection = connection;
     }
 
-    // Insert a new board entry
-    public void insertBoard(CompanyDTO company) 
-    {
-        try 
-        {
-            String query = "INSERT INTO board (title, content, author, create_date) VALUES (?, ?, ?, ?)";
-            try (PreparedStatement pst = connection.prepareStatement(query)) {
-                pst.setString(1, company.getCompanyName());
-                pst.setString(2, company.getPhoneNumber());
-                pst.setString(3, company.getCompanyEmail());
-                pst.setString(4, company.getRepresentative());
-                pst.setString(5, company.getHeadquartersLocation());
-                pst.executeUpdate();
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle the exception according to your application's needs
+    // Method to save a company
+    public void saveCompany(CompanyDTO company) throws SQLException {
+        String query = "INSERT INTO company_table (company_name, phone_number, company_email, representative, headquarters_location) " +
+                       "VALUES (?, ?, ?, ?, ?)";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, company.getCompanyName());
+            preparedStatement.setString(2, company.getPhoneNumber());
+            preparedStatement.setString(3, company.getCompanyEmail());
+            preparedStatement.setString(4, company.getRepresentative());
+            preparedStatement.setString(5, company.getHeadquartersLocation());
+
+            preparedStatement.executeUpdate();
         }
     }
 
-    // Retrieve all board entries
-    public List<Board> getAllBoards() {
-        List<Board> boards = new ArrayList<>();
-        try {
-            String query = "SELECT * FROM board";
-            try (PreparedStatement pst = connection.prepareStatement(query)) {
-                try (ResultSet rs = pst.executeQuery()) {
-                    while (rs.next()) {
-                        Board board = new Board();
-                        board.setId(rs.getInt("id"));
-                        board.setTitle(rs.getString("title"));
-                        board.setContent(rs.getString("content"));
-                        board.setAuthor(rs.getString("author"));
-                        board.setCreateDate(rs.getTimestamp("create_date"));
-                        boards.add(board);
-                    }
+    // Method to retrieve a company by name
+    public CompanyDTO getCompanyByName(String companyName) throws SQLException {
+        String query = "SELECT * FROM company_table WHERE company_name = ?";
+        CompanyDTO company = null;
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(query)) {
+            preparedStatement.setString(1, companyName);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    company = new CompanyDTO();
+                    company.setCompanyName(resultSet.getString("company_name"));
+                    company.setPhoneNumber(resultSet.getString("phone_number"));
+                    company.setCompanyEmail(resultSet.getString("company_email"));
+                    company.setRepresentative(resultSet.getString("representative"));
+                    company.setHeadquartersLocation(resultSet.getString("headquarters_location"));
                 }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            // Handle the exception according to your application's needs
         }
-        return boards;
+
+        return company;
     }
 
-    // Other methods like updateBoard, deleteBoard, getBoardById, etc. can be added based on your requirements
+    // Additional methods for updating, deleting, or querying companies can be added here
 }
-

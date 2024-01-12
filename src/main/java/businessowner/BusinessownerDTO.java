@@ -1,24 +1,16 @@
 package businessowner;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import lombok.Data;
 
-import java.util.Date;
-
-public class CompanyDTO {
+@Data
+public class BusinessOwnerDTO 
+{
 	
-    private int id;
-    private String title;
-    private String content;
-    private String author;
-    private Date createDate;
-
-    // Constructors, getters, and setters
-
-    // You can generate these using your IDE or write them manually
+    private String BusinessOwnerNumber;
+    private String BusinessOwnerName;
+    private String BusinessRegistrationNumber;
+    private String BusinessOwnerResidentRegistrationNumber;
+    private String PhoneNumber;
+    private String BusinessOwnerEmail;
+    private String BusinessOwnerPassword;
 }
-

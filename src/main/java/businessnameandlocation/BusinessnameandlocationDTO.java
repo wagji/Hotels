@@ -1,32 +1,13 @@
 package businessnameandlocation;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
+import lombok.Data;
 
-import jakarta.servlet.ServletException;
-import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
-import jakarta.servlet.http.HttpServletRequest;
-import jakarta.servlet.http.HttpServletResponse;
-import java.io.IOException;
-
-import java.util.Date;
-
-public class BusinessnameandlocationDTO {
+@Data
+public class BusinessNameAndLocationDTO 
+{
 	
-    private int id;
-    private String title;
-    private String content;
-    private String author;
-    private Date createDate;
-
-    // Constructors, getters, and setters
-
-    // You can generate these using your IDE or write them manually
-}
-
-
+    private String BusinessOwnerNumber;
+    private String BusinessName;
+    private String BusinessAddress;
+ 
+    }
