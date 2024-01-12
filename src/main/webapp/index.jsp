@@ -399,7 +399,7 @@
           <div class="showcase-content">
             <h1><span class="text-primary">Enjoy</span> your stay</h1>
             <p class="lead"></p>
-            <a class="btn" href="about.jsp">About our hotel</a>
+            <a class="btn" href="about.jsp">trabler hotel</a>
           </div>
         </div>
       </div>
@@ -444,6 +444,7 @@
           <button class="login-btn" onclick="kakaoLogin()">Kakao</button>
           <button class="login-btn" onclick="naverLogin()">Naver</button>
         </div>
+       
       </aside>
       <section id="searchSection">
         <h2>Find Your Perfect Hotel or Flight</h2>
@@ -488,9 +489,11 @@
             required
           />
 
-          <button type="button" onclick="searchHotels()">Search Hotels</button>
-          <button type="button" onclick="searchFlights()">
-            Search Flights
+          <a href="https://www.yanolja.com/sub-home/hotel"><button type="button" onclick="https://www.yanolja.com/">Search Hotels</button></a>
+         
+          
+         <a href="https://flight-web.yanolja.com/flights"> <button type="button" onclick="searchFlights()">Search alrplayn</button></a>
+       
           </button>
         </form>
 
